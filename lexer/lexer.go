@@ -39,7 +39,6 @@ func (l *Lexer) NextToken() token.Token {
 	case 0:
 		tok = newToken(token.EOF, token.ZeroLiteral)
 	}
-
 	return tok
 }
 
