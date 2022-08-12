@@ -3,6 +3,10 @@ package token
 type TokenType string
 
 const (
+	ZeroLiteral byte = 0x00
+)
+
+const (
 	ILLEGAL TokenType = "ILLEGAL"
 	EOF     TokenType = "EOF"
 
@@ -21,9 +25,9 @@ const (
 	SEMICOLON TokenType = ";"
 
 	LPAREN TokenType = "("
-	RRAPEN TokenType = ")"
+	RPAREN TokenType = ")"
 	LBRACE TokenType = "{"
-	RBRAE  TokenType = "}"
+	RBRACE TokenType = "}"
 
 	// keywords
 	FUNCTION TokenType = "FUNCTION"
@@ -33,4 +37,8 @@ const (
 type Token struct {
 	Type    TokenType
 	Literal string
+}
+
+func New(t TokenType, l string) Token {
+	return Token{Type: t, Literal: l}
 }
