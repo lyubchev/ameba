@@ -34,6 +34,19 @@ const (
 	LET      TokenType = "LET"
 )
 
+var keywords = map[string]TokenType{
+	"func": FUNCTION,
+	"let":  LET,
+}
+
+// Looks for supported keywords to identify the token type
+func LookupIdent(ident string) TokenType {
+	if tokenType, ok := keywords[ident]; ok {
+		return tokenType
+	}
+	return IDENT
+}
+
 type Token struct {
 	Type    TokenType
 	Literal string

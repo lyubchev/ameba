@@ -5,10 +5,10 @@ import (
 )
 
 type Lexer struct {
-	input        string
-	position     int  // current position in input (points to current char)
-	readPosition int  // current reading position in input (after current char)
-	char         byte // current char under examination
+	input           string
+	currentPosition int  // current position in input (points to current char)
+	readPosition    int  // current reading position in input (after current char)
+	char            byte // current char under examination
 }
 
 func New(input string) *Lexer {
@@ -38,12 +38,28 @@ func (l *Lexer) NextToken() token.Token {
 		tok = newToken(token.RBRACE, l.char)
 	case 0:
 		tok = newToken(token.EOF, token.ZeroLiteral)
+
+	default:
+		if isLetter(l.char) {
+			tok.Literal = l.readIdentifier(l.currentPosition)
+			tok.Type = token.LookupIdent(tok.Literal)
+			return tok
+		} else {
+			tok = newToken(token.ILLEGAL, l.char)
+		}
 	}
 	return tok
 }
 
-func newToken(tokenType token.TokenType, ch byte) token.Token {
-	return token.New(tokenType, string(ch))
+func (l *Lexer) readIdentifier(startingPosition int) string {
+	for isLetter(l.char) {
+		l.readChar()
+	}
+	return l.input[startingPosition:l.currentPosition]
+}
+
+func isLetter(ch byte) bool {
+	return 'a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || ch == '_'
 }
 
 func (l *Lexer) readChar() {
@@ -52,6 +68,10 @@ func (l *Lexer) readChar() {
 	} else {
 		l.char = l.input[l.readPosition]
 	}
-	l.position = l.readPosition
+	l.currentPosition = l.readPosition
 	l.readPosition += 1
+}
+
+func newToken(tokenType token.TokenType, ch byte) token.Token {
+	return token.New(tokenType, string(ch))
 }
