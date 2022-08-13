@@ -17,8 +17,15 @@ const (
 	BOOLEAN TokenType = "BOOL"   // true, false
 
 	// operators
-	ASSIGN TokenType = "="
-	PLUS   TokenType = "+"
+	ASSIGN   TokenType = "="
+	PLUS     TokenType = "+"
+	MINUS    TokenType = "-"
+	BANG     TokenType = "!"
+	ASTERISK TokenType = "*"
+	SLASH    TokenType = "/"
+
+	LT TokenType = "<"
+	GT TokenType = ">"
 
 	// delimiters
 	COMMA     TokenType = ","
