@@ -24,13 +24,23 @@ func (l *Lexer) NextToken() token.Token {
 
 	switch l.char {
 	case '=':
-		tok = newToken(token.ASSIGN, l.char)
+		if l.peekChar() == '=' {
+			l.readChar()
+			tok = token.New(token.EQ, token.EqualLiteral)
+		} else {
+			tok = newToken(token.ASSIGN, l.char)
+		}
 	case '+':
 		tok = newToken(token.PLUS, l.char)
 	case '-':
 		tok = newToken(token.MINUS, l.char)
 	case '!':
-		tok = newToken(token.BANG, l.char)
+		if l.peekChar() == '=' {
+			l.readChar()
+			tok = token.New(token.NOT_EQ, token.NotEqualLiteral)
+		} else {
+			tok = newToken(token.BANG, l.char)
+		}
 	case '/':
 		tok = newToken(token.SLASH, l.char)
 	case '*':
@@ -86,6 +96,16 @@ func (l *Lexer) readIdentifier(startingPosition int) string {
 	return l.input[startingPosition:l.currentPosition]
 }
 
+// like readChar() but without progressing the reader's position and only returns the character without saving it
+func (l *Lexer) peekChar() byte {
+	if l.readPosition >= len(l.input) {
+		return 0
+	} else {
+		return l.input[l.readPosition]
+	}
+}
+
+// reads the next character from input and saves it to the lexer's state
 func (l *Lexer) readChar() {
 	if l.readPosition >= len(l.input) {
 		l.char = 0

@@ -3,7 +3,9 @@ package token
 type TokenType string
 
 const (
-	ZeroLiteral byte = 0x00
+	ZeroLiteral     byte   = 0x00
+	EqualLiteral    string = "=="
+	NotEqualLiteral string = "!="
 )
 
 const (
@@ -27,6 +29,9 @@ const (
 	LT TokenType = "<"
 	GT TokenType = ">"
 
+	EQ     TokenType = "=="
+	NOT_EQ TokenType = "!="
+
 	// delimiters
 	COMMA     TokenType = ","
 	SEMICOLON TokenType = ";"
@@ -39,11 +44,21 @@ const (
 	// keywords
 	FUNCTION TokenType = "FUNCTION"
 	LET      TokenType = "LET"
+	TRUE     TokenType = "true"
+	FALSE    TokenType = "false"
+	IF       TokenType = "if"
+	ELSE     TokenType = "else"
+	RETURN   TokenType = "return"
 )
 
 var keywords = map[string]TokenType{
-	"func": FUNCTION,
-	"let":  LET,
+	"func":   FUNCTION,
+	"let":    LET,
+	"return": RETURN,
+	"if":     IF,
+	"else":   ELSE,
+	"true":   TRUE,
+	"false":  FALSE,
 }
 
 // Looks for supported keywords to identify the token type
