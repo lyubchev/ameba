@@ -12,7 +12,9 @@ type Lexer struct {
 }
 
 func New(input string) *Lexer {
-	return &Lexer{input: input}
+	l := &Lexer{input: input}
+	l.readChar()
+	return l
 }
 
 func (l *Lexer) NextToken() token.Token {
@@ -48,6 +50,7 @@ func (l *Lexer) NextToken() token.Token {
 		} else if isDigit(l.char) {
 			tok.Literal = l.readNumber(l.currentPosition)
 			tok.Type = token.INT
+			return tok
 		} else {
 			tok = newToken(token.ILLEGAL, l.char)
 		}
