@@ -8,6 +8,11 @@ import (
 	"github.com/impzero/ameba/token"
 )
 
+type (
+	prefixParserFn func() ast.Expression
+	infixParserFn  func(ast.Expression) ast.Expression
+)
+
 type Parser struct {
 	lex *lexer.Lexer
 
@@ -15,6 +20,9 @@ type Parser struct {
 	peekToken token.Token
 
 	errors []string
+
+	prefixParserFns map[token.TokenType]prefixParserFn
+	infixParserFns  map[token.TokenType]infixParserFn
 }
 
 func New(l *lexer.Lexer) *Parser {
