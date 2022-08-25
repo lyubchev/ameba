@@ -127,3 +127,11 @@ func (p *Parser) nextToken() {
 	p.curToken = p.peekToken
 	p.peekToken = p.lex.NextToken()
 }
+
+func (p *Parser) registerPrefixFn(tokenType token.TokenType, fn prefixParserFn) {
+	p.prefixParserFns[tokenType] = fn
+}
+
+func (p *Parser) registerInfixFn(tokenType token.TokenType, fn infixParserFn) {
+	p.infixParserFns[tokenType] = fn
+}
